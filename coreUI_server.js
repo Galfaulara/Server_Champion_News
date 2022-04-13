@@ -2,7 +2,9 @@ import { Insertion } from './Insertion.js';
 import bcrypt from 'bcryptjs';
 import cors from 'cors';
 import express from 'express';
+import { followChamp } from './followChamp.js';
 import knex from 'knex';
+import { unfollowChamp } from './unfollowChamp.js';
 
 const app = express();
 
@@ -15,11 +17,20 @@ export const db = knex({
     host : '127.0.0.1',
     port: '5432',
     user : 'postgres',
-    password : '4494postgres',
-    database : 'CoreUI_Users'
+    password : 'postgres4494',
+    database : 'postgres'
     }
 });
-
+export const db2 = knex({
+    client: 'pg',
+    connection: {
+    host : '127.0.0.1',
+    port: '5432',
+    user : 'postgres',
+    password : 'postgres4494',
+    database : 'loreDatabase'
+    }
+});
   
 
 app.listen(3000, async ()=>
@@ -38,11 +49,11 @@ app.post('/login', async(req, res) =>{
         const enteredPassword = await req.body.password;
         let passwordValidate = false;
     
-        const TESTO = await db('UserAuth')
+        const logIn = await db('UserAuth')
         .join('usersprivate','UserAuth.email','=', 'usersprivate.email')
         .select('*')
         .where('UserAuth.email','=',enteredUsername)
-        if(TESTO.length != 0 ){
+        if(logIn.length != 0 ){
             passwordValidate = await bcrypt.compare(enteredPassword, TESTO[0].password)
         }
         else{
@@ -56,7 +67,7 @@ app.post('/login', async(req, res) =>{
             }
         })
         console.log('Trynna login as:',req.body.username, req.body.password)
-        console.log(TESTO)
+        console.log(logIn)
     }
 catch(error){
     res.send({
@@ -81,3 +92,50 @@ app.post('/register', async(req, res) =>{
     
 }
 )
+
+app.post('/champions/follow', async(req, res) =>{
+    try{
+        followChamp(req, res)
+    }
+    
+catch(error){
+    res.send({
+        status: 'failed',
+        data: {
+            username:req.body.user,
+            champion:req.body.champion,
+            games:req.body.games,
+            message: error
+        }
+    })
+
+}
+
+    
+    
+}
+)
+
+app.get('/champions/get', async(req, res) =>{
+const followedChampionsData = await db2.select('*').from('followedChampions')
+res.send(followedChampionsData)
+})
+
+app.delete('/champions/delete/:championName', async(req, res) => {
+console.log('To delete: ', req.params.championName)
+    try{
+        unfollowChamp(req, res)
+    }
+    
+catch(error){
+    res.send({
+        status: 'failed',
+        data: {
+            champion:req.body.champion,
+            message: error
+        }
+    })
+
+}
+
+})
