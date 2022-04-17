@@ -5,6 +5,8 @@ import express from 'express';
 import { followChamp } from './followChamp.js';
 import knex from 'knex';
 import { unfollowChamp } from './unfollowChamp.js';
+import { updateAdd } from './updateAdd.js';
+import { updateEliminate } from './updateEliminate.js';
 
 const app = express();
 
@@ -121,10 +123,64 @@ const followedChampionsData = await db2.select('*').from('followedChampions')
 res.send(followedChampionsData)
 })
 
+app.put('/champions/updateEliminate', async(req, res) =>{
+    try{
+        updateEliminate(req, res).then(res.send({
+            status: 'success',
+            data: {
+                champion:req.body.champion,
+                game:req.body.game
+        }
+        }))
+    }
+    
+catch(error){
+    res.send({
+        status: 'failed',
+        data: {
+            champion:req.body.champion,
+            message: error
+        }
+    })
+
+}
+
+    })
+
+app.put('/champions/updateAdd', async(req, res) =>{
+    try{
+        updateAdd(req, res).then(res.send({
+            status: 'success',
+            data: {
+                champion:req.body.champion,
+                game:req.body.game
+        }
+        }))
+    }
+    
+catch(error){
+    res.send({
+        status: 'failed',
+        data: {
+            champion:req.body.champion,
+            message: error
+        }
+    })
+
+}
+    }) 
+
+
 app.delete('/champions/delete/:championName', async(req, res) => {
 console.log('To delete: ', req.params.championName)
     try{
-        unfollowChamp(req, res)
+        unfollowChamp(req, res).then(res.send({
+            status: 'success',
+            data: {
+                champion:req.body.champion,
+                message:'Champion eliminated'
+        }
+        }))
     }
     
 catch(error){

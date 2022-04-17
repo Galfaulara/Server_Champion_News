@@ -23,7 +23,6 @@ if (championsArray.includes(req.body.champion)){
             }
         
     })).catch(err => err.detail)
-    console.log(follow)
 }
 else{res.send(
     {
