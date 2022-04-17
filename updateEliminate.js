@@ -7,6 +7,6 @@ let game = req.body.game
 const toEliminate = await db2.select('*').from("followedChampions").whereRaw('champion = ?', champion)
 let updatedArray = (toEliminate[0].games)
 let indexElim = ((toEliminate[0]).games.indexOf(game)) 
-await (updatedArray.splice(indexElim,1))
+await (updatedArray.splice(indexElim,1)).sort()
 await db2('followedChampions').where('champion','=',champion).update({games: updatedArray},)
 }
