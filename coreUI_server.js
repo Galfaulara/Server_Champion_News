@@ -56,7 +56,7 @@ app.post('/login', async(req, res) =>{
         .select('*')
         .where('UserAuth.email','=',enteredUsername)
         if(logIn.length != 0 ){
-            passwordValidate = await bcrypt.compare(enteredPassword, TESTO[0].password)
+            passwordValidate = await bcrypt.compare(enteredPassword, logIn[0].password)
         }
         else{
             console.log('No username found')
@@ -80,6 +80,7 @@ catch(error){
             message: error
         }
     })
+    console.log(error)
 
 }
     }
