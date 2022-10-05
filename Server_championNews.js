@@ -1,36 +1,15 @@
+import {db, db2} from './connectionDB.js'
 import { followChamp, unfollowChamp, updateAdd, updateEliminate } from '.services/championServices.js';
 
 import { Insertion } from './Insertion.js';
 import bcrypt from 'bcryptjs';
 import cors from 'cors';
 import express from 'express';
-import knex from 'knex';
 
 const app = express();
 
 app.use(cors())
 app.use(express.json())
-
-export const db = knex({
-    client: 'pg',
-    connection: {
-    host : '',
-    port: '',
-    user : '',
-    password : '',
-    database : ''
-    }
-});
-export const db2 = knex({
-    client: 'pg',
-    connection: {
-    host : '',
-    port: '',
-    user : '',
-    password : '',
-    database : ''
-    }
-});
   
 
 app.listen(3000, async ()=>
