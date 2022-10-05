@@ -14,21 +14,21 @@ app.use(express.json())
 export const db = knex({
     client: 'pg',
     connection: {
-    host : '127.0.0.1',
-    port: '5432',
-    user : 'postgres',
-    password : 'postgres4494',
-    database : 'postgres'
+    host : '',
+    port: '',
+    user : '',
+    password : '',
+    database : ''
     }
 });
 export const db2 = knex({
     client: 'pg',
     connection: {
-    host : '127.0.0.1',
-    port: '5432',
-    user : 'postgres',
-    password : 'postgres4494',
-    database : 'loreDatabase'
+    host : '',
+    port: '',
+    user : '',
+    password : '',
+    database : ''
     }
 });
   
