@@ -1,4 +1,6 @@
-import {db2} from './Server_championNews.js'
+import {db, db2} from '../database/repositories/connectionDB.js'
+
+const champNames = await db2.select('name','title','champ_id','blurb').from('champions');
 
 export const followChamp = async(req, res) => {
 console.log(req.body.games, req.body.user, req.body.champion )
@@ -62,4 +64,21 @@ export const updateEliminate = async(req, res) => {
     let indexElim = ((toEliminate[0]).games.indexOf(game)) 
     await (updatedArray.splice(indexElim,1)).sort()
     await db2('followedChampions').where('champion','=',champion).update({games: updatedArray},)
+}
+
+
+export const getChampFromDB = async(req, res) =>{
+      
+     const toInsert = await req.body.flatMap((champion) => 
+        champNames.some(dataElement => dataElement.name === champion.name) ? [] : champion)
+
+        toInsert.flatMap( async (champion) => {
+            await db2('champions').insert({
+            name: champion.name,
+            title: champion.title,
+            champ_id: champion.id,
+            blurb: champion.blurb
+            })
+        }
+        )           
 }

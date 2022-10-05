@@ -1,18 +1,24 @@
-import {db, db2} from './connectionDB.js'
-import { followChamp, unfollowChamp, updateAdd, updateEliminate } from '.services/championServices.js';
+import {db, db2} from './database/repositories/connectionDB.js'
+import {
+    followChamp,
+    getChampFromDB,
+    unfollowChamp,
+    updateAdd,
+    updateEliminate
+} from './services/championServices.js';
 
-import { Insertion } from './Insertion.js';
 import bcrypt from 'bcryptjs';
 import cors from 'cors';
 import express from 'express';
+import { userRegistration } from './userRegistration.js';
 
 const app = express();
 
 app.use(cors())
-app.use(express.json())
-  
 
-app.listen(3000, async ()=>
+app.use(express.json())
+
+app.listen(3001, async ()=>
 
 {
     console.log("Running")

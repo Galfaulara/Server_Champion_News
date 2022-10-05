@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
-import {db} from './Server_championNews.js'
+import {db} from './database/repositories/connectionDB.js'
 
-export const Insertion = async(req, res) => {
+export const userRegistration = async(req, res) => {
     const SECURE = await bcrypt.hash(req.body.password, 10);
     await db('usersprivate')
     .insert({
