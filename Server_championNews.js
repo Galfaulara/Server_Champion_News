@@ -1,4 +1,4 @@
-import {db, db2} from './database/repositories/connectionDB.js'
+import {db, db2} from './database/connectionDB.js'
 import {
     followChamp,
     getChampFromDB,
@@ -22,10 +22,10 @@ app.listen(3001, async ()=>
 
 {
     console.log("Running")
-    const toAuthenticate = 
+    const users = 
     await db.select('*')
     .from('UserAuth');
-    console.log(toAuthenticate)
+    console.log(users)
 })
 
 app.post('/', (req, res)=>{
@@ -59,7 +59,7 @@ app.post('/login', async(req, res) =>{
                 authentication: passwordValidate,
             }
         })
-        console.log('Trynna login as:',req.body.username, req.body.password)
+        console.log('Trying to login as:',req.body.username, req.body.password)
         console.log(logIn)
     }
 catch(error){
@@ -80,9 +80,11 @@ catch(error){
 
 app.post('/register', async(req, res) =>{
     
-    Insertion(req, res).then(status => res.send(200)).catch(err => res.send(err.detail))
+    Insertion(req, res)
+    .then(status => res.send(200))
+    .catch(err => res.send(err.detail))
 
-    console.log('Trynna register as:',req.body.username)
+    console.log('Trying to register as:',req.body.username)
     
 }
 )

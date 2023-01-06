@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import {db} from './database/repositories/connectionDB.js'
+import {db} from './database/connectionDB.js'
 
 export const userRegistration = async(req, res) => {
     const SECURE = await bcrypt.hash(req.body.password, 10);

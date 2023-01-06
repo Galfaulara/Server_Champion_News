@@ -1,6 +1,19 @@
-import {db, db2} from '../database/repositories/connectionDB.js'
+import {allChampionsName, getChampsTable} from '../database/repositories/championRepository.js'
+import {db, db2} from '../database/connectionDB.js'
 
-const champNames = await db2.select('name','title','champ_id','blurb').from('champions');
+const champsTable = async () =>
+{
+
+    try {
+        
+        const champsTable = await getChampsTable()
+        return champsTable
+    
+    } catch (error) {
+        throw(error)
+    }
+
+}
 
 export const followChamp = async(req, res) => {
 console.log(req.body.games, req.body.user, req.body.champion )
@@ -68,9 +81,9 @@ export const updateEliminate = async(req, res) => {
 
 
 export const getChampFromDB = async(req, res) =>{
-      
+        let table = champsTable();
      const toInsert = await req.body.flatMap((champion) => 
-        champNames.some(dataElement => dataElement.name === champion.name) ? [] : champion)
+        table.some(dataElement => dataElement.name === champion.name) ? [] : champion)
 
         toInsert.flatMap( async (champion) => {
             await db2('champions').insert({
